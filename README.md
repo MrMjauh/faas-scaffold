@@ -1,6 +1,4 @@
-# faas-scaffold
-
-Clone the scaffold and run `docker-compose up` in dir to get started.
-
-For support in your IDEA, a sugestion is to put it into your `GOPATH` and work form there, eg. `$GOPATH/src/github.com/<YOUR_HANDLE>/faas`
+**Notes:**
+- Should follow https://github.com/golang-standards/project-layout
+- This is a learning experience too, so some code, more specifically docker pkg is for fun and should not be used seriously. Only wanted to write parts of it for learning more about the docker API
 
