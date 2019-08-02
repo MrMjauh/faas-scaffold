@@ -22,7 +22,7 @@ const (
 type Container struct {
 	Id string
 	State string
-	Labels []string
+	Labels map[string]string
 }
 
 func createClient() http.Client {
