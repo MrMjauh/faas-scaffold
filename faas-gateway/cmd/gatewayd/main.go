@@ -1,15 +1,16 @@
 package main
 
 import (
-	docker "faas-scaffold/docker/pkg"
-	"faas-scaffold/faas-gateway/internal/pkg/dto"
-	"faas-scaffold/faas-gateway/internal/pkg/handler"
-	"faas-scaffold/faas-gateway/internal/pkg/provider"
-	"faas-scaffold/faas-gateway/internal/pkg/service"
+	"github.com/MrMjauh/faas-scaffold/docker/pkg"
+	"github.com/MrMjauh/faas-scaffold/faas-gateway/internal/pkg/dto"
+	"github.com/MrMjauh/faas-scaffold/faas-gateway/internal/pkg/handler"
+	"github.com/MrMjauh/faas-scaffold/faas-gateway/internal/pkg/provider"
+	"github.com/MrMjauh/faas-scaffold/faas-gateway/internal/pkg/service"
 	"flag"
 	"log"
 	"net/http"
 	"sync"
+	"time"
 )
 
 func main() {
@@ -31,6 +32,13 @@ func main() {
 	// Run the providing function and listening function
 	go provider.Provide(providerChan)
 	go service.UpdateRegistry(providerChan, &routesMutex, &routes)
+
+	go func() {
+		for true {
+			dockerService.LinuxOnly_Me()
+			time.Sleep(time.Second)
+		}
+	}()
 
 	allHandler := handler.RouteHandler{
 		RoutesMutex: &routesMutex,

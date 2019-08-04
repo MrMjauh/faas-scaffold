@@ -1,7 +1,7 @@
 package service
 
 import (
-	"faas-scaffold/faas-gateway/internal/pkg/dto"
+	"github.com/MrMjauh/faas-scaffold/faas-gateway/internal/pkg/dto"
 	"sync"
 )
 

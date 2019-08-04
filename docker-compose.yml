@@ -2,21 +2,32 @@ version: "3.0"
 
 services:
  faas-gateway:
+   image: faas-scaffold_faas-gateway:latest
    build:
      context: ./faas-gateway
    ports:
      - "8080:8080"
    volumes:
-     - /var/run/docker.sock:/var/run/docker.sock
+     -  /var/run/docker.sock:/var/run/docker.sock
      - ./faas-gateway:/go/src/faas-scaffold/faas-gateway
      - ./docker:/go/src/faas-scaffold/docker
      - ./commons:/go/src/faas-scaffold/commons
+   networks:
+     - faas
  multiply:
+   image: faas-scaffold_multiply:latest
    build:
      context: ./multiply
+   deploy:
+     replicas: 2
    labels:
      - "faas.name=multiply"
      - "faas.port=8080"
    volumes:
      - ./multiply:/go/src/faas-scaffold/multiply
      - ./commons:/go/src/faas-scaffold/commons
+   networks:
+     - faas
+
+networks:
+  faas:

@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"faas-scaffold/commons/pkg/rest"
-	"faas-scaffold/faas-gateway/internal/pkg/dto"
-	"faas-scaffold/faas-gateway/internal/pkg/service"
+	"github.com/MrMjauh/faas-scaffold/commons/pkg/rest"
+	"github.com/MrMjauh/faas-scaffold/faas-gateway/internal/pkg/dto"
+	"github.com/MrMjauh/faas-scaffold/faas-gateway/internal/pkg/service"
 	"net/http"
 	"net/http/httputil"
 	"net/url"

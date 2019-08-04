@@ -1,7 +1,7 @@
 package mux_common
 
 import (
-	"faas-scaffold/commons/pkg/rest"
+	"github.com/MrMjauh/faas-scaffold/commons/pkg/rest"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"

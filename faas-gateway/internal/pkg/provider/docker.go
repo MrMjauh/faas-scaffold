@@ -1,8 +1,8 @@
 package provider
 
 import (
-	docker "faas-scaffold/docker/pkg"
-	"faas-scaffold/faas-gateway/internal/pkg/dto"
+	"github.com/MrMjauh/faas-scaffold/docker/pkg"
+	"github.com/MrMjauh/faas-scaffold/faas-gateway/internal/pkg/dto"
 	"log"
 	"strconv"
 	"time"
@@ -26,7 +26,14 @@ func (provider * DockerProvider) Provide(configurationChan chan <- dto.ServiceRo
 	}
 
 	for true {
-		containers, err := (*provider.DockerService).ListAllContainers()
+		detailedMe, err := (*provider.DockerService).LinuxOnly_Me()
+		if err != nil {
+			log.Println(err)
+			sleepFunc()
+			continue
+		}
+
+		containers, err := (*provider.DockerService).GetContainers()
 		if err != nil {
 			log.Println(err)
 			sleepFunc()
@@ -56,9 +63,15 @@ func (provider * DockerProvider) Provide(configurationChan chan <- dto.ServiceRo
 				continue
 			}
 
+			alias := findAliasThatCanBeCalled(&detailedMe, &container)
+			if alias == "" {
+				continue
+			}
+
 			services[name] = dto.Service{
 				Name: name,
 				Port: uint16(port),
+				Alias: alias,
 			}
 		}
 
@@ -70,4 +83,17 @@ func (provider * DockerProvider) Provide(configurationChan chan <- dto.ServiceRo
 
 		sleepFunc()
 	}
+}
+
+func findAliasThatCanBeCalled(containerCallee * docker.DetailedContainer, containerToBeCalled * docker.Container) string {
+	for calleeNetworkName, _ := range containerCallee.NetworkSettings.Networks {
+		for toBeCalledNetworkName, _ := range containerCallee.NetworkSettings.Networks {
+			if calleeNetworkName == toBeCalledNetworkName && len(containerCallee.NetworkSettings.Networks[toBeCalledNetworkName].Aliases) > 0 {
+				// Just pick one, no need to know exactly
+				return containerCallee.NetworkSettings.Networks[toBeCalledNetworkName].Aliases[0]
+			}
+		}
+	}
+
+	return ""
 }

@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"faas-scaffold/commons/pkg/rest"
-	"faas-scaffold/multiply/internal/pkg/config"
-	"faas-scaffold/multiply/internal/pkg/service"
+	"github.com/MrMjauh/faas-scaffold/commons/pkg/rest"
+	"github.com/MrMjauh/faas-scaffold/multiply/internal/pkg/config"
+	"github.com/MrMjauh/faas-scaffold/multiply/internal/pkg/service"
 	"net/http"
 	"strconv"
 )

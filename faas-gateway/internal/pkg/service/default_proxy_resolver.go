@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"faas-scaffold/faas-gateway/internal/pkg/dto"
+	"github.com/MrMjauh/faas-scaffold/faas-gateway/internal/pkg/dto"
 	"regexp"
 	"strconv"
 )
@@ -30,5 +30,5 @@ func (resolver DefaultProxyResolver) ResolveProxy(path string, services *map[str
 		return "", "", errors.New("no service found for key = " + routeKey)
 	}
 
-	return "172.18.0.2:" + strconv.FormatUint(uint64(service.Port), 10), path[len(firstRouteUrl):], nil
+	return service.Alias + ":" + strconv.FormatUint(uint64(service.Port), 10), path[len(firstRouteUrl):], nil
 }

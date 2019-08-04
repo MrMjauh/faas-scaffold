@@ -1,8 +1,8 @@
 package main
 
 import (
-	"faas-scaffold/commons/pkg/mux"
-	"faas-scaffold/multiply/internal/pkg/handler"
+	"github.com/MrMjauh/faas-scaffold/commons/pkg/mux"
+	"github.com/MrMjauh/faas-scaffold/multiply/internal/pkg/handler"
 	"flag"
 	"log"
 	"net/http"
