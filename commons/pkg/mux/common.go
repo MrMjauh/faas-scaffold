@@ -1,4 +1,4 @@
-package mux_common
+package mux
 
 import (
 	"encoding/json"
@@ -9,12 +9,12 @@ import (
 	"runtime/debug"
 )
 
-func CreateRouteConfiguration(router * mux.Router) {
+func SetupRouterConfiguration(router * mux.Router) {
 	router.NotFoundHandler = http.HandlerFunc(NotFoundHandler)
 	router.Use(RestMiddleware)
 }
 
-func CreateRouteForVersion(router * mux.Router, version string) *mux.Router {
+func SetupRouterForVersion(router * mux.Router, version string) *mux.Router {
 	return router.PathPrefix("/api/" + version).Subrouter()
 }
 

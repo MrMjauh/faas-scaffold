@@ -2,27 +2,14 @@ package docker
 
 import (
 	"context"
+	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net"
 	"net/http"
-	"encoding/json"
 )
 
-const (
-	STATUS_STATE_CREATED = "created"
-	STATUS_STATE_RESTARTING = "restarting"
-	STATUS_STATE_RUNNING = "running"
-	STATUS_STATE_REMOVING = "removing"
-	STATUS_STATE_PAUSED = "paused"
-	STATUS_STATE_EXITED = "exited"
-	STATUS_STATE_DEAD = "dead"
-)
+type DefaultImpl struct {
 
-type Container struct {
-	Id string
-	State string
-	Labels map[string]string
 }
 
 func createClient() http.Client {
@@ -35,12 +22,12 @@ func createClient() http.Client {
 	}
 }
 
-func ListAllContainers() []Container {
+func (defaultImpl DefaultImpl) ListAllContainers() ([]Container, error) {
 	client := createClient()
 	resp, err := client.Get("http://unix" + "/containers/json")
 
 	if err != nil {
-		log.Fatal(err)
+		return []Container{}, err
 	}
 
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
@@ -49,5 +36,5 @@ func ListAllContainers() []Container {
 	var containers []Container
 	json.Unmarshal([]byte(body), &containers)
 
-	return containers
+	return containers, nil
 }

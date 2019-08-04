@@ -1,7 +1,7 @@
 package main
 
 import (
-	"faas-scaffold/commons/pkg/mux_common"
+	"faas-scaffold/commons/pkg/mux"
 	"faas-scaffold/multiply/internal/app/multiplyd/handler"
 	"flag"
 	"github.com/gorilla/mux"
