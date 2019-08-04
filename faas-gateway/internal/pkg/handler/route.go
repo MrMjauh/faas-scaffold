@@ -5,6 +5,8 @@ import (
 	"faas-scaffold/faas-gateway/internal/pkg/dto"
 	"faas-scaffold/faas-gateway/internal/pkg/service"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"sync"
 )
 
@@ -15,24 +17,28 @@ type RouteHandler struct {
 }
 
 const (
-	INVALID_ROUTE_CODE = 20000
+	ERROR_CODE_INVALID_ROUTE = 10000
 )
 
 func (routerHandler* RouteHandler) ProxyHandler(w http.ResponseWriter, r *http.Request) {
 	routerHandler.RoutesMutex.RLock()
 	defer routerHandler.RoutesMutex.RUnlock()
 
-	redirectUrl, err := (*routerHandler.ProxyResolver).ResolveProxy(r.URL.Path, &routerHandler.Routes.Services)
+	host, urlRewrite, err := (*routerHandler.ProxyResolver).ResolveProxy(r.URL.String(), &routerHandler.Routes.Services)
 
 	if err != nil {
-		rest.WriteJsonError(w, rest.GeneralErrorResponse(INVALID_ROUTE_CODE, err.Error()))
+		rest_common.WriteJsonError(w, rest_common.GeneralErrorResponse(ERROR_CODE_INVALID_ROUTE, err.Error()))
 		return
 	}
 
-	// Do redirect
-	rest.WriteJsonResponse(w, redirectUrl)
+	// Rewrite the url where we strip of the multiply
+	r.URL, _ = url.Parse(urlRewrite)
+	u, _ := url.Parse("http://" + host)
+	httputil.NewSingleHostReverseProxy(u).ServeHTTP(w, r)
 }
 
 func (routerHandler* RouteHandler) StatsHandler(w http.ResponseWriter, r *http.Request) {
-	rest.WriteJsonResponse(w, routerHandler.Routes)
+	routerHandler.RoutesMutex.RLock()
+	defer routerHandler.RoutesMutex.RUnlock()
+	rest_common.WriteJsonResponse(w, routerHandler.Routes)
 }

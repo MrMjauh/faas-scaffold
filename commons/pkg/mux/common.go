@@ -1,7 +1,6 @@
-package mux
+package mux_common
 
 import (
-	"encoding/json"
 	"faas-scaffold/commons/pkg/rest"
 	"github.com/gorilla/mux"
 	"log"
@@ -9,12 +8,18 @@ import (
 	"runtime/debug"
 )
 
+func CreateRoutingTemplate() *mux.Router {
+	router := mux.NewRouter()
+	SetupRouterConfiguration(router)
+	return router
+}
+
 func SetupRouterConfiguration(router * mux.Router) {
 	router.NotFoundHandler = http.HandlerFunc(NotFoundHandler)
 	router.Use(RestMiddleware)
 }
 
-func SetupRouterForVersion(router * mux.Router, version string) *mux.Router {
+func CreateAPIRoute(router * mux.Router, version string) *mux.Router {
 	return router.PathPrefix("/api/" + version).Subrouter()
 }
 
@@ -26,14 +31,10 @@ func RestMiddleware(next http.Handler) http.Handler {
 }
 
 func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
-	// Order is important https://github.com/dimfeld/httptreemux/issues/47
-	w.Header().Add("Content-Type", "application/json")
-	w.WriteHeader(rest.HTTP_STATUS_CODE_ERROR)
-
-	rest.WriteJsonError(w, rest.Response{
-			Data: rest.Error{
+	rest_common.WriteJsonError(w, rest_common.Response{
+			Data: rest_common.Error{
 				Msg:  r.URL.Path + " is not a valid endpoint",
-				Code: rest.ERROR_CODE_NOT_FOUND,
+				Code: rest_common.ERROR_CODE_NOT_FOUND,
 			},
 	})
 }
@@ -46,13 +47,13 @@ func WrappedHandler(h http.Handler) http.Handler {
 				return
 			}
 
-			resp, uuid := rest.InternalErrorResponse()
+			resp, uuid := rest_common.InternalErrorResponse()
 			log.Println("uuid = ", uuid)
 			log.Println("Panic recovery with message: ", r)
 			log.Println("Stacktrace output")
 			log.Println(string(debug.Stack()))
 
-			rest.WriteJsonResponse(w, resp)
+			rest_common.WriteJsonResponse(w, resp)
 		}()
 		h.ServeHTTP(w, r)
 	})

@@ -9,17 +9,11 @@
 			"revisionTime": "2019-07-20T20:14:35Z"
 		},
 		{
-			"checksumSHA1": "Whgd6w/ClAIVzqUAP1bVNNrNs9Q=",
-			"path": "github.com/johncgriffin/overflow",
-			"revision": "4d914c927216bf4e10c887ed4a9161aff06d7d8c",
-			"revisionTime": "2017-06-15T02:10:17Z"
-		},
-		{
 			"checksumSHA1": "Tutue3nEgM/87jitUcYv6ODwyNE=",
 			"path": "github.com/satori/go.uuid",
 			"revision": "b2ce2384e17bbe0c6d34077efa39dbab3e09123b",
 			"revisionTime": "2018-10-28T12:50:25Z"
 		}
 	],
-	"rootPath": "faas-scaffold/multiply"
+	"rootPath": "faas-scaffold/commons"
 }

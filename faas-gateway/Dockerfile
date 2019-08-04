@@ -4,8 +4,10 @@ FROM golang:1.11
 RUN go get -u github.com/kardianos/govendor && \
     go get -u -v github.com/codeskyblue/fswatch
 
-RUN mkdir -p /go/src/github.com/modfin/faas-scaffold/faas-gateway
-WORKDIR /go/src/github.com/modfin/faas-scaffold/faas-gateway
+RUN mkdir -p /go/src/faas-scaffold/faas-gateway
+RUN mkdir -p /go/src/faas-scaffold/docker
+RUN mkdir -p /go/src/faas-scaffold/commons
+WORKDIR /go/src/faas-gateway
 
 EXPOSE 80
 
@@ -16,7 +18,7 @@ triggers: \n\
   - '**/*.go' \n\
   env: \n\
     DEBUG: '1' \n\
-  cmd: go run /go/src/github.com/modfin/faas-scaffold/faas-gateway/cmd/gatewayd/gatewayd.go \n\
+  cmd: go run /go/src/faas-scaffold/faas-gateway/cmd/gatewayd/main.go \n\
   shell: true \n\
   delay: 100ms \n\
   stop_timeout: 500ms \n\

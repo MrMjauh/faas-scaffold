@@ -1,10 +1,10 @@
-package rest
+package rest_common
 
 import (
 	"encoding/json"
+	"github.com/satori/go.uuid"
 	"log"
 	"net/http"
-	"github.com/satori/go.uuid"
 )
 
 type Response struct {

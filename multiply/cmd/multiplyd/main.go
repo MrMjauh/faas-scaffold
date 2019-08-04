@@ -2,29 +2,22 @@ package main
 
 import (
 	"faas-scaffold/commons/pkg/mux"
-	"faas-scaffold/multiply/internal/app/multiplyd/handler"
+	"faas-scaffold/multiply/internal/pkg/handler"
 	"flag"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
-var port = flag.String("port", "8080", "sets the port to serve requests from")
-
-func setupV1Route(r* mux.Router) {
-	r.Handle("/multiply", mux_common.WrappedHandler(http.HandlerFunc(handler.MultiplyHandler))).Methods("GET")
-	r.Handle("/add", mux_common.WrappedHandler(http.HandlerFunc(handler.AdditionHandler))).Methods("GET")
-}
-
 func main(){
-	log.Println("Starting up multiply service...")
+	var port = flag.String("port", "8080", "sets the port to serve requests from")
+	flag.Parse()
 
-	router := mux.NewRouter()
-	// Common configuration make sures it looks the same on all micro-services
-	mux_common.CreateRouteConfiguration(router)
+	log.Println("Starting up multiply service on port " + *port)
 
-	var apiVersion1Routes = mux_common.CreateRouteForVersion(router, "v1")
-	setupV1Route(apiVersion1Routes)
+	router := mux_common.CreateRoutingTemplate()
+	apiVersion1Routes := mux_common.CreateAPIRoute(router, "v1")
+	apiVersion1Routes.Handle("/multiply", mux_common.WrappedHandler(http.HandlerFunc(handler.MultiplyHandler))).Methods("GET")
+	apiVersion1Routes.Handle("/add", mux_common.WrappedHandler(http.HandlerFunc(handler.AdditionHandler))).Methods("GET")
 
 	http.ListenAndServe(":" + *port, router)
 }

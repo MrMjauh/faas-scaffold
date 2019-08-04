@@ -17,22 +17,22 @@ func MultiplyHandler(w http.ResponseWriter, r * http.Request) {
 	yStr := r.URL.Query().Get("y")
 	x, err := strconv.ParseInt(xStr, 10, 64)
 	if err != nil {
-		rest.WriteJsonError(w, rest.ValidationErrorResponse("x"))
+		rest_common.WriteJsonError(w, rest_common.ValidationErrorResponse("x"))
 		return
 	}
 	y, err := strconv.ParseInt(yStr, 10, 64)
 	if err != nil {
-		rest.WriteJsonError(w, rest.ValidationErrorResponse("y"))
+		rest_common.WriteJsonError(w, rest_common.ValidationErrorResponse("y"))
 		return
 	}
 
 	res, ok := service.Multiply(x, y)
 	if !ok {
-		rest.WriteJsonError(w, rest.GeneralErrorResponse(config.ERROR_CODE_COMPUTE_OVERFLOW, "Overflow"))
+		rest_common.WriteJsonError(w, rest_common.GeneralErrorResponse(config.ERROR_CODE_COMPUTE_OVERFLOW, "Overflow"))
 		return
 	}
 
-	rest.WriteJsonResponse(w, rest.Response{
+	rest_common.WriteJsonResponse(w, rest_common.Response{
 		Data: AnswerReturn{
 			Result: res,
 		},
@@ -44,22 +44,22 @@ func AdditionHandler(w http.ResponseWriter, r * http.Request) {
 	yStr := r.URL.Query().Get("y")
 	x, err := strconv.ParseInt(xStr, 10, 64)
 	if err != nil {
-		rest.WriteJsonError(w, rest.ValidationErrorResponse("x"))
+		rest_common.WriteJsonError(w, rest_common.ValidationErrorResponse("x"))
 		return
 	}
 	y, err := strconv.ParseInt(yStr, 10, 64)
 	if err != nil {
-		rest.WriteJsonError(w, rest.ValidationErrorResponse("y"))
+		rest_common.WriteJsonError(w, rest_common.ValidationErrorResponse("y"))
 		return
 	}
 
 	res, ok := service.Add(x, y)
 	if !ok {
-		rest.WriteJsonError(w, rest.GeneralErrorResponse(config.ERROR_CODE_COMPUTE_OVERFLOW, "Overflow"))
+		rest_common.WriteJsonError(w, rest_common.GeneralErrorResponse(config.ERROR_CODE_COMPUTE_OVERFLOW, "Overflow"))
 		return
 	}
 
-	rest.WriteJsonResponse(w, rest.Response{
+	rest_common.WriteJsonResponse(w, rest_common.Response{
 		Data: AnswerReturn{
 			Result: res,
 		},

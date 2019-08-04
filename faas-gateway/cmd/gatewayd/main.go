@@ -12,10 +12,11 @@ import (
 	"sync"
 )
 
-var port = flag.String("port", "8080", "sets the port to serve requests from")
-
 func main() {
-	log.Println("Starting gateway")
+	var port = flag.String("port", "8080", "sets the port to serve requests from")
+	flag.Parse()
+
+	log.Println("Starting gateway on port " + *port)
 
 	// Create our registry of routes
 	var routesMutex sync.RWMutex
