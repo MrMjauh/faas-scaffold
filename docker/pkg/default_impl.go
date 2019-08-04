@@ -40,8 +40,6 @@ func (defaultImpl DefaultImpl) GetContainers() ([]Container, error) {
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	body := string(bodyBytes)
 
-	log.Println(body)
-
 	var containers []Container
 	json.Unmarshal([]byte(body), &containers)
 
