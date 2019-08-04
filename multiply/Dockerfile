@@ -4,10 +4,13 @@ FROM golang:1.11
 RUN go get -u github.com/kardianos/govendor && \
     go get -u -v github.com/codeskyblue/fswatch
 
-RUN mkdir -p /go/src/faas-scaffold
-
-WORKDIR /go/src/faas-scaffold/multiply
+RUN mkdir -p /go/src/github.com/MrMjauh/faas-scaffold
+COPY . /go/src/github.com/MrMjauh/faas-scaffold
+WORKDIR /go/src/github.com/MrMjauh/faas-scaffold/multiply
 
 EXPOSE 8080
 
-CMD govendor init && govendor fetch -v +m && go run /go/src/faas-scaffold/multiply/cmd/multiplyd/main.go
+RUN govendor init
+RUN govendor fetch -v +m
+
+CMD go run /go/src/github.com/MrMjauh/faas-scaffold/multiply/cmd/multiplyd/main.go -port=8080
