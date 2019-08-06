@@ -11,5 +11,8 @@ EXPOSE 8082
 
 RUN govendor init
 RUN govendor fetch -v +m
+WORKDIR /go/src/github.com/MrMjauh/faas-scaffold/multiply/cmd/multiplyd
+RUN go build main.go
+WORKDIR /go/src/github.com/MrMjauh/faas-scaffold/multiply
 
-CMD go run /go/src/github.com/MrMjauh/faas-scaffold/multiply/cmd/multiplyd/main.go -port=8082
+CMD ./cmd/multiplyd/main -port=8082

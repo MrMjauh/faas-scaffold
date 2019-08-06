@@ -52,6 +52,7 @@ type Container struct {
 
 type ContainerNetwork struct {
 	Aliases []string
+	NetworkID string
 }
 
 type ContainerNetworkSettings struct {

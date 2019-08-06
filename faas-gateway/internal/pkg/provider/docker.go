@@ -86,9 +86,9 @@ func (provider * DockerProvider) Provide(configurationChan chan <- dto.ServiceRo
 }
 
 func findAliasThatCanBeCalled(containerCallee * docker.Container, serviceToBeCalled * docker.Service) string {
-	for calleeNetworkName, _ := range containerCallee.NetworkSettings.Networks {
+	for _, val := range containerCallee.NetworkSettings.Networks {
 		for _,toBeCalledNetworkName := range serviceToBeCalled.Spec.TaskTemplate.Networks {
-			if calleeNetworkName == toBeCalledNetworkName.Target && len(toBeCalledNetworkName.Aliases) > 0 {
+			if val.NetworkID == toBeCalledNetworkName.Target && len(toBeCalledNetworkName.Aliases) > 0 {
 				// Just pick one, no need to know exactly
 				return toBeCalledNetworkName.Aliases[0]
 			}

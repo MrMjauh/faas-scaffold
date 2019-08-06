@@ -19,7 +19,7 @@ services:
      context: ./multiply
    labels:
      - "faas.name=multiply"
-     - "faas.port=8080"
+     - "faas.port=8082"
    networks:
      - faas
 

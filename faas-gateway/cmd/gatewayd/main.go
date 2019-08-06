@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"sync"
+	"time"
 )
 
 func main() {
@@ -31,6 +32,11 @@ func main() {
 	// Run the providing function and listening function
 	go provider.Provide(providerChan)
 	go service.UpdateRegistry(providerChan, &routesMutex, &routes)
+
+	go func() {
+		dockerService.LinuxOnly_Me()
+		time.Sleep(time.Second)
+	}()
 
 	allHandler := handler.RouteHandler{
 		RoutesMutex: &routesMutex,

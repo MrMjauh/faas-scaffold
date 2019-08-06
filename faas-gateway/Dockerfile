@@ -9,7 +9,12 @@ WORKDIR /go/src/github.com/MrMjauh/faas-scaffold/faas-gateway
 
 EXPOSE 8081
 
+# Make sure we prebuild as much as possible
+# So we dont get any nasty suprises
 RUN govendor init
 RUN govendor fetch -v +m
+WORKDIR /go/src/github.com/MrMjauh/faas-scaffold/faas-gateway/cmd/gatewayd
+RUN go build main.go
+WORKDIR /go/src/github.com/MrMjauh/faas-scaffold/faas-gateway
 
-CMD go run /go/src/github.com/MrMjauh/faas-scaffold/faas-gateway/cmd/gatewayd/main.go -port=8081
+CMD ./cmd/gatewayd/main -port=8081
