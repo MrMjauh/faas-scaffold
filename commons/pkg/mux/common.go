@@ -47,13 +47,13 @@ func WrappedHandler(h http.Handler) http.Handler {
 				return
 			}
 
-			resp, uuid := rest_common.InternalErrorResponse()
+			error, uuid := rest_common.InternalErrorResponse()
 			log.Println("uuid = ", uuid)
 			log.Println("Panic recovery with message: ", r)
 			log.Println("Stacktrace output")
 			log.Println(string(debug.Stack()))
 
-			rest_common.WriteJsonResponse(w, resp)
+			rest_common.WriteJsonError(w, error)
 		}()
 		h.ServeHTTP(w, r)
 	})

@@ -32,10 +32,8 @@ func MultiplyHandler(w http.ResponseWriter, r * http.Request) {
 		return
 	}
 
-	rest_common.WriteJsonResponse(w, rest_common.Response{
-		Data: AnswerReturn{
+	rest_common.WriteJsonResponse(w, AnswerReturn{
 			Result: res,
-		},
 	})
 }
 
@@ -59,9 +57,7 @@ func AdditionHandler(w http.ResponseWriter, r * http.Request) {
 		return
 	}
 
-	rest_common.WriteJsonResponse(w, rest_common.Response{
-		Data: AnswerReturn{
+	rest_common.WriteJsonResponse(w, AnswerReturn{
 			Result: res,
-		},
 	})
 }

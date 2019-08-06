@@ -27,32 +27,28 @@ const (
 	ERROR_CODE_INTERNAL_ERROR = 401
 )
 
-func GeneralErrorResponse(code uint32, msg string) Response {
-	return Response{
-		Data: Error{
+func GeneralErrorResponse(code uint32, msg string) Error {
+	return Error{
 			Msg:  msg,
 			Code: code,
-		},
 	}
 }
 
-func InternalErrorResponse() (Response, string) {
+func InternalErrorResponse() (Error, string) {
 	uuid := GetUUID()
 
-	return Response{
-		Data: Error{
+	return Error{
 			Msg:  "Something went horribly wrong, check UUID = " + uuid + " for more information",
 			Code: ERROR_CODE_INTERNAL_ERROR,
-		},
 	}, uuid
 }
 
-func ValidationErrorResponse(fieldName string) Response {
+func ValidationErrorResponse(fieldName string) Error {
 	return GeneralErrorResponse(ERROR_CODE_VALIDATION_ERROR, "Field " + fieldName + " is either not valid or not present")
 }
 
-func WriteJsonError(w http.ResponseWriter, response Response) {
-	jsonBytes, err := json.Marshal(response)
+func WriteJsonError(w http.ResponseWriter, data interface{}) {
+	jsonBytes, err := json.Marshal(Response{Data:data})
 
 	if err != nil {
 		log.Println("Could not marshal error response, this should never happen")
@@ -65,7 +61,7 @@ func WriteJsonError(w http.ResponseWriter, response Response) {
 }
 
 func WriteJsonResponse(w http.ResponseWriter, data interface{}) {
-	jsonBytes, err := json.Marshal(data)
+	jsonBytes, err := json.Marshal(Response{Data:data})
 
 	if err != nil {
 		resp, uuid := InternalErrorResponse()
