@@ -33,21 +33,21 @@ func (provider * DockerProvider) Provide(configurationChan chan <- dto.ServiceRo
 			continue
 		}
 
-		containers, err := (*provider.DockerService).GetContainers()
+		services, err := (*provider.DockerService).GetServices()
 		if err != nil {
 			log.Println(err)
 			sleepFunc()
 			continue
 		}
 
-		services := make(map[string]dto.Service)
-		for _, container := range containers {
-			if container.State != docker.STATUS_STATE_RUNNING {
+		servicesDto := make(map[string]dto.Service)
+		for _, service := range services {
+			if service.Spec.Mode.Replicated.Replicas == 0 {
 				continue
 			}
 
-			portStr, portKeyFound := container.Labels[LABEL_PORT];
-			name, nameKeyFound := container.Labels[LABEL_NAME];
+			portStr, portKeyFound := service.Spec.TaskTemplate.ContainerSpec.Labels[LABEL_PORT];
+			name, nameKeyFound := service.Spec.TaskTemplate.ContainerSpec.Labels[LABEL_NAME];
 
 			if !portKeyFound || !nameKeyFound {
 				continue
@@ -58,17 +58,17 @@ func (provider * DockerProvider) Provide(configurationChan chan <- dto.ServiceRo
 				continue
 			}
 
-			_, serviceFound := services[name]
+			_, serviceFound := servicesDto[name]
 			if serviceFound {
 				continue
 			}
 
-			alias := findAliasThatCanBeCalled(&detailedMe, &container)
+			alias := findAliasThatCanBeCalled(&detailedMe, &service)
 			if alias == "" {
 				continue
 			}
 
-			services[name] = dto.Service{
+			servicesDto[name] = dto.Service{
 				Name: name,
 				Port: uint16(port),
 				Alias: alias,
@@ -77,7 +77,7 @@ func (provider * DockerProvider) Provide(configurationChan chan <- dto.ServiceRo
 
 		routes := dto.ServiceRoutes{
 			ProviderName: PROVIDER_NAME,
-			Services: services,
+			Services: servicesDto,
 		}
 		configurationChan <- routes
 
@@ -85,12 +85,12 @@ func (provider * DockerProvider) Provide(configurationChan chan <- dto.ServiceRo
 	}
 }
 
-func findAliasThatCanBeCalled(containerCallee * docker.DetailedContainer, containerToBeCalled * docker.Container) string {
+func findAliasThatCanBeCalled(containerCallee * docker.Container, serviceToBeCalled * docker.Service) string {
 	for calleeNetworkName, _ := range containerCallee.NetworkSettings.Networks {
-		for toBeCalledNetworkName, _ := range containerCallee.NetworkSettings.Networks {
-			if calleeNetworkName == toBeCalledNetworkName && len(containerCallee.NetworkSettings.Networks[toBeCalledNetworkName].Aliases) > 0 {
+		for _,toBeCalledNetworkName := range serviceToBeCalled.Spec.TaskTemplate.Networks {
+			if calleeNetworkName == toBeCalledNetworkName.Target && len(toBeCalledNetworkName.Aliases) > 0 {
 				// Just pick one, no need to know exactly
-				return containerCallee.NetworkSettings.Networks[toBeCalledNetworkName].Aliases[0]
+				return toBeCalledNetworkName.Aliases[0]
 			}
 		}
 	}

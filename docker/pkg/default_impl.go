@@ -29,45 +29,45 @@ func createClient() http.Client {
 	}
 }
 
-func (defaultImpl DefaultImpl) GetContainers() ([]Container, error) {
+func (defaultImpl DefaultImpl) GetServices() ([]Service, error) {
 	client := createClient()
-	resp, err := client.Get("http://unix" + "/" + VERSION + "/containers/json")
+	resp, err := client.Get("http://unix" + "/" + VERSION + "/services")
 
 	if err != nil {
-		return []Container{}, err
+		return []Service{}, err
 	}
 
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	body := string(bodyBytes)
 
-	var containers []Container
-	json.Unmarshal([]byte(body), &containers)
+	var services []Service
+	json.Unmarshal([]byte(body), &services)
 
-	return containers, nil
+	return services, nil
 }
 
-func (defaultImpl DefaultImpl) GetContainer(containerId string) (DetailedContainer, error) {
+func (defaultImpl DefaultImpl) GetContainer(containerId string) (Container, error) {
 	client := createClient()
 	resp, err := client.Get("http://unix/" + VERSION + "/containers/" + containerId + "/json")
 
 	if err != nil {
-		return DetailedContainer{}, err
+		return Container{}, err
 	}
 
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	body := string(bodyBytes)
 
-	var container DetailedContainer
+	var container Container
 	json.Unmarshal([]byte(body), &container)
 
 	return container, nil
 }
 
-func (defaultImpl DefaultImpl) LinuxOnly_Me() (DetailedContainer, error) {
+func (defaultImpl DefaultImpl) LinuxOnly_Me() (Container, error) {
 	out, err := exec.Command("cat", "/etc/hostname").Output()
 	if err != nil {
 		log.Println(err)
-		return DetailedContainer{}, err
+		return Container{}, err
 	}
 	containerId := strings.TrimSuffix(strings.TrimSpace(string(out)), "\n")
 
