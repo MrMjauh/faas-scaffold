@@ -15,4 +15,4 @@ WORKDIR /go/src/github.com/MrMjauh/faas-scaffold/multiply/cmd/multiplyd
 RUN go build main.go
 WORKDIR /go/src/github.com/MrMjauh/faas-scaffold/multiply
 
-CMD ./cmd/multiplyd/main -port=8082
+CMD ./cmd/multiplyd/main -port=8082 -mode=$mode

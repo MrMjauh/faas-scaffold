@@ -28,8 +28,8 @@ Requirements on load balancing are automatically taken care of by using the over
 - docker stack deploy --compose-file docker-compose.yml faas
 - docker service scale X=10 // Scale it to 10 instances
 
-Visit http://127.0.0.1:8081/multiply/api/v1/add?x=10&y=25 for example
-or visit http://127.0.0.1:8081/multiply2/api/v1/add?x=10&y=25 for another service (but still the same)
+Visit http://127.0.0.1:8081/add/api/v1/add?x=10&y=25 for example
+or visit http://127.0.0.1:8081/multiply/api/v1/multiply?x=10&y=25 for another service (but still the same)
 
 **Testing the load balancing**
 
@@ -46,7 +46,7 @@ Paste this in the browser, for example, the inspect tool's console
     if (calls > max_calls) {
         console.log(buckets);clearInterval(intervaller)
     } 
-    var data = fetch("http://127.0.0.1:8081/multiply/api/v1/add?x=10&y=25")
+    var data = fetch("http://127.0.0.1:8081/add/api/v1/add?x=10&y=25")
               .then((resp) => { return resp.json();})
               .then((json) => {
                 var serviceID = json.Data.ServiceID; 
