@@ -1,5 +1,5 @@
 {
 	"comment": "",
 	"ignore": "test",
-	"rootPath": "faas-scaffold/multiply"
+	"rootPath": "faas-scaffold/math"
 }

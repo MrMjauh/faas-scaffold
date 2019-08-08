@@ -3,17 +3,17 @@ package main
 import (
 	"flag"
 	"github.com/MrMjauh/faas-scaffold/commons/pkg/mux"
-	"github.com/MrMjauh/faas-scaffold/multiply/internal/pkg/handler"
+	"github.com/MrMjauh/faas-scaffold/math/internal/pkg/handler"
 	"log"
 	"net/http"
 )
 
 func main(){
 	var port = flag.String("port", "8080", "sets the port to serve requests from")
-	var mode = flag.String("mode", "multiply", "supports mode multiply or add")
+	var mode = flag.String("mode", "multiply", "supports mode math or add")
 	flag.Parse()
 
-	log.Println("Starting up multiply service on port " + *port)
+	log.Println("Starting up math service on port " + *port)
 
 	router := mux_common.CreateRoutingTemplate()
 	apiVersion1Routes := mux_common.CreateAPIRoute(router, "v1")

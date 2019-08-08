@@ -31,7 +31,7 @@ func (routerHandler* RouteHandler) ProxyHandler(w http.ResponseWriter, r *http.R
 		return
 	}
 
-	// Rewrite the url where we strip of the multiply
+	// Rewrite the url where we strip of the math
 	r.URL, _ = url.Parse(urlRewrite)
 	u, _ := url.Parse("http://" + host)
 	httputil.NewSingleHostReverseProxy(u).ServeHTTP(w, r)

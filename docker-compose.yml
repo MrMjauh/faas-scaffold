@@ -16,26 +16,26 @@ services:
    networks:
      - faas
  multiply:
-   image: faas-scaffold_multiply:latest
+   image: faas-scaffold_math:latest
    deploy:
       replicas: 2
    environment:
      - mode=multiply
    build:
-     context: ./multiply
+     context: ./math
    labels:
      - "faas.name=multiply"
      - "faas.port=8082"
    networks:
      - faas
  add:
-   image: faas-scaffold_multiply:latest
+   image: faas-scaffold_math:latest
    deploy:
      replicas: 2
    environment:
      - mode=add
    build:
-     context: ./multiply
+     context: ./math
    labels:
      - "faas.name=add"
      - "faas.port=8082"

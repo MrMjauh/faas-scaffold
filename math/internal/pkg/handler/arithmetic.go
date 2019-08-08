@@ -2,8 +2,8 @@ package handler
 
 import (
 	"github.com/MrMjauh/faas-scaffold/commons/pkg/rest"
-	"github.com/MrMjauh/faas-scaffold/multiply/internal/pkg/config"
-	"github.com/MrMjauh/faas-scaffold/multiply/internal/pkg/service"
+	"github.com/MrMjauh/faas-scaffold/math/internal/pkg/config"
+	"github.com/MrMjauh/faas-scaffold/math/internal/pkg/service"
 	"net/http"
 	"os/exec"
 	"strconv"
