@@ -5,11 +5,14 @@ import (
 	"github.com/MrMjauh/faas-scaffold/multiply/internal/pkg/config"
 	"github.com/MrMjauh/faas-scaffold/multiply/internal/pkg/service"
 	"net/http"
+	"os/exec"
 	"strconv"
+	"strings"
 )
 
 type AnswerReturn struct {
 	Result int64
+	ServiceID string
 }
 
 func MultiplyHandler(w http.ResponseWriter, r * http.Request) {
@@ -34,6 +37,7 @@ func MultiplyHandler(w http.ResponseWriter, r * http.Request) {
 
 	rest_common.WriteJsonResponse(w, AnswerReturn{
 			Result: res,
+			ServiceID: serviceId(),
 	})
 }
 
@@ -59,5 +63,11 @@ func AdditionHandler(w http.ResponseWriter, r * http.Request) {
 
 	rest_common.WriteJsonResponse(w, AnswerReturn{
 			Result: res,
+			ServiceID: serviceId(),
 	})
+}
+
+func serviceId() string {
+	out, _ := exec.Command("cat", "/etc/hostname").Output()
+	return strings.TrimSuffix(strings.TrimSpace(string(out)), "\n")
 }

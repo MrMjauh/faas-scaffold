@@ -5,6 +5,8 @@ services:
    image: faas-scaffold_faas-gateway:latest
    build:
      context: ./faas-gateway
+   constraints:
+      - node.role == manager
    ports:
      - "8081:8081"
    volumes:
@@ -19,6 +21,17 @@ services:
      context: ./multiply
    labels:
      - "faas.name=multiply"
+     - "faas.port=8082"
+   networks:
+     - faas
+ multiply2:
+   image: faas-scaffold_multiply:latest
+   deploy:
+     replicas: 2
+   build:
+     context: ./multiply
+   labels:
+     - "faas.name=multiply2"
      - "faas.port=8082"
    networks:
      - faas

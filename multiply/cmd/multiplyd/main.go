@@ -1,9 +1,9 @@
 package main
 
 import (
+	"flag"
 	"github.com/MrMjauh/faas-scaffold/commons/pkg/mux"
 	"github.com/MrMjauh/faas-scaffold/multiply/internal/pkg/handler"
-	"flag"
 	"log"
 	"net/http"
 )

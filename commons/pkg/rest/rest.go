@@ -71,7 +71,6 @@ func WriteJsonResponse(w http.ResponseWriter, data interface{}) {
 		return
 	}
 
-	// Order is important https://github.com/dimfeld/httptreemux/issues/47
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(HTTP_STATUS_CODE_OK)
 	w.Write(jsonBytes)
