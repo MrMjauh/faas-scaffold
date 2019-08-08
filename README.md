@@ -6,13 +6,13 @@
 - commons/ This is where commonly shared code can be used for all services
 - docker/ A docker client for getting the information about services and containers
 - faas-gateway/ The L7 reverse proxy
-- multiply/ The dummy service
+- math/ The dummy service
 
 **Overall architecture**
 
 Task was to create a L7 reverse proxy and a dummy service. There is not much to say, but I follow the recommendations given. We let  each faas gateway container poll the docker API every X second. 
 
-If we let the number of manager nodes be few and we have a lot of worker nodes, scaling the gateway will be limited since it is dependent on having access to the docker API, which only a manager node has acccess too (if using the unix socket approach). 
+If we let the number of manager nodes be few and we have a lot of worker nodes, scaling the gateway will be limited since it is dependent on having access to the docker API, which only a manager node has acccess to (if using the unix socket approach). 
 
 Requirements on load balancing are automatically taken care of by using the overlay network in docker swarm that automatically balances between nodes in a service. 
 
