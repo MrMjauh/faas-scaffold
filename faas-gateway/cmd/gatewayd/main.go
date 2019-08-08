@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"github.com/MrMjauh/faas-scaffold/commons/pkg/mux"
 	"github.com/MrMjauh/faas-scaffold/docker/pkg"
 	"github.com/MrMjauh/faas-scaffold/faas-gateway/internal/pkg/dto"
 	"github.com/MrMjauh/faas-scaffold/faas-gateway/internal/pkg/handler"
@@ -38,8 +39,9 @@ func main() {
 		ProxyResolver: &proxyResolver,
 	}
 
-	http.HandleFunc("/", allHandler.ProxyHandler)
-	http.HandleFunc("/stats", allHandler.StatsHandler)
-
-	http.ListenAndServe(":" + *port, nil)
+	router := mux_common.CreateRoutingTemplate()
+	apiVersion1Routes := mux_common.CreateAPIRoute(router, "v1")
+	apiVersion1Routes.Handle("/stats", mux_common.WrappedHandler(http.HandlerFunc(allHandler.StatsHandler))).Methods("GET")
+	router.PathPrefix("/").HandlerFunc(allHandler.ProxyHandler)
+	http.ListenAndServe(":" + *port, router)
 }
