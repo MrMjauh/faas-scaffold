@@ -67,6 +67,10 @@ func AdditionHandler(w http.ResponseWriter, r * http.Request) {
 	})
 }
 
+func PanicHandle(w http.ResponseWriter, r * http.Request) {
+	panic("Paaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaanic")
+}
+
 func serviceId() string {
 	out, _ := exec.Command("cat", "/etc/hostname").Output()
 	return strings.TrimSuffix(strings.TrimSpace(string(out)), "\n")

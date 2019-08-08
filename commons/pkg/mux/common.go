@@ -31,11 +31,9 @@ func RestMiddleware(next http.Handler) http.Handler {
 }
 
 func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
-	rest_common.WriteJsonError(w, rest_common.Response{
-			Data: rest_common.Error{
+	rest_common.WriteJsonError(w, rest_common.Error{
 				Msg:  r.URL.Path + " is not a valid endpoint",
 				Code: rest_common.ERROR_CODE_NOT_FOUND,
-			},
 	})
 }
 

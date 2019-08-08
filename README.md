@@ -20,14 +20,16 @@ Requirements on load balancing is automatically taken care of by using the overl
 - Investigate net.dial and if we need to close unix socket after in the docker pkg
 - Copy paste code in docker/pkg default_impl, check how to make it better
 - Fix the dockerfiles so that common libraries are fetched from local and not from github by govendor
+- Validation of query params is a bit verbose and copy pasta
 
 **Testing the code**
 
-docker-compose build
-docker stack deploy --compose-file docker-compose.yml faas
-docker service scale X=10 // Scale it to 10 instances
+- docker-compose build
+- docker stack deploy --compose-file docker-compose.yml faas
+- docker service scale X=10 // Scale it to 10 instances
 
 Visit http://127.0.0.1:8081/multiply/api/v1/add?x=10&y=25 for example
+or visit http://127.0.0.1:8081/multiply2/api/v1/add?x=10&y=25 for another service (but still the same)
 
 **Testing the load balancing**
 

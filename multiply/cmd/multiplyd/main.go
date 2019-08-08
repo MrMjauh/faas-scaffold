@@ -18,6 +18,7 @@ func main(){
 	apiVersion1Routes := mux_common.CreateAPIRoute(router, "v1")
 	apiVersion1Routes.Handle("/multiply", mux_common.WrappedHandler(http.HandlerFunc(handler.MultiplyHandler))).Methods("GET")
 	apiVersion1Routes.Handle("/add", mux_common.WrappedHandler(http.HandlerFunc(handler.AdditionHandler))).Methods("GET")
+	apiVersion1Routes.Handle("/panic", mux_common.WrappedHandler(http.HandlerFunc(handler.PanicHandle))).Methods("GET")
 
 	http.ListenAndServe(":" + *port, router)
 }

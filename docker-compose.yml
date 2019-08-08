@@ -5,8 +5,10 @@ services:
    image: faas-scaffold_faas-gateway:latest
    build:
      context: ./faas-gateway
-   constraints:
-      - node.role == manager
+   deploy:
+    placement:
+      constraints:
+        - node.role == manager
    ports:
      - "8081:8081"
    volumes:
